@@ -2,12 +2,18 @@
 
 namespace App\Models;
 
+<<<<<<< HEAD
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+=======
+>>>>>>> ca7ced0 (first version: database, models and spatie role)
 use Illuminate\Database\Eloquent\Model;
 
 class Course extends Model
 {
+<<<<<<< HEAD
     use HasFactory;
+=======
+>>>>>>> ca7ced0 (first version: database, models and spatie role)
     protected $fillable = [
         'course_name',
         'description',
@@ -20,11 +26,17 @@ class Course extends Model
         'category_id'
     ];
 
+<<<<<<< HEAD
     public function users()
     {
         return $this->belongsToMany(User::class)
             ->withPivot(['is_completed' , 'certificate_id'])
             ->withTimestamps();
+=======
+    public function user()
+    {
+        return $this->belongsTo(User::class,'user_id');
+>>>>>>> ca7ced0 (first version: database, models and spatie role)
     }
     public function category()
     {
@@ -34,7 +46,11 @@ class Course extends Model
     {
         return $this->hasMany(CourseRating::class);
     }
+<<<<<<< HEAD
     public function course_requirements()
+=======
+    public function requirements()
+>>>>>>> ca7ced0 (first version: database, models and spatie role)
     {
         return $this->hasMany(CourseRequirement::class);
     }

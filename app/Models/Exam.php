@@ -26,7 +26,11 @@ class Exam extends Model
     {
         return $this->belongsTo(Video::class,'video_id');
     }
+<<<<<<< HEAD
     public function exam_results()
+=======
+    public function results()
+>>>>>>> ca7ced0 (first version: database, models and spatie role)
     {
         return $this->hasMany(ExamResult::class);
     }

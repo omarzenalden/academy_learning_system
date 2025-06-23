@@ -4,17 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class BannedUser extends Model
+class Enthusiasm extends Model
 {
     protected $fillable = [
         'user_id',
-        'reason',
-        'expires_at'
+        'date',
+        'watch_time',
+        'attended',
+        'streak'
     ];
-<<<<<<< HEAD
-
-=======
->>>>>>> ca7ced0 (first version: database, models and spatie role)
     public function user()
     {
         return $this->belongsTo(User::class,'user_id');

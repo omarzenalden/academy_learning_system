@@ -103,3 +103,8 @@ Route::controller(CategoryController::class)->group(function () {
 //    Route::get('/google/redirect', 'redirectToGoogle');
 //    Route::get('/google/callback', 'handleGoogleCallback');
 //});
+
+
+Route::get('/user', function (Request $request) {
+    return $request->user();
+})->middleware('auth:sanctum');
