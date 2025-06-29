@@ -23,11 +23,11 @@ class SendVerificationEmail
     public function handle(UserRegistered $event): void
     {
 
-        dispatch(new SendEmailVerificationJob($event->user));
 
-//        SendEmailVerificationJob::dispatch($event->user)->delay(now()->addMinutes(1));
+
+//        dispatch(new SendEmailVerificationJob($event->user));
+
+        SendEmailVerificationJob::dispatch($event->user)->delay(now()->addMinutes(1));
 
     }
 }
-
-
