@@ -7,6 +7,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\PermissionRegistrar;
 
 class RolePermissionSeeder extends Seeder
 {
@@ -15,6 +16,8 @@ class RolePermissionSeeder extends Seeder
      */
     public function run(): void
     {
+        app()[PermissionRegistrar::class]->forgetCachedPermissions();
+
         //create roles
         $guestRole = Role::create(['name' => 'guest']);
         $womanRole = Role::create(['name' => 'woman']);
@@ -66,8 +69,11 @@ class RolePermissionSeeder extends Seeder
         foreach ($permissions as $permission){
             Permission::findOrCreate($permission,'web');
         }
+        // another way to create permissions
+//        $permission = Permission::make($permissions);
+//        $permission->saveOrFail();
 
-        //assign permissions to roels
+        //assign permissions to roles
         $adminRole->syncPermissions($permissions);
         $womanRole->givePermissionTo($woman_permission);
         $childRole->givePermissionTo($child_permission);
@@ -80,7 +86,6 @@ class RolePermissionSeeder extends Seeder
             'username' => 'admin',
             'email' => 'admin@mail.com',
             'password' => 'admin',
-            'role' => 'admin'
         ]);
 
         $adminUser->assignRole($adminRole);
@@ -93,7 +98,6 @@ class RolePermissionSeeder extends Seeder
             'username' => 'supervisor',
             'email' => 'supervisor@mail.com',
             'password' => 'supervisor',
-            'role' => 'supervisor'
         ]);
 
         $supervisorUser->assignRole($supervisorRole);
@@ -107,7 +111,6 @@ class RolePermissionSeeder extends Seeder
             'username' => 'woman',
             'email' => 'woman@mail.com',
             'password' => 'woman',
-            'role' => 'woman'
         ]);
 
         $womanUser->assignRole($womanRole);
@@ -122,7 +125,6 @@ class RolePermissionSeeder extends Seeder
             'username' => 'child',
             'email' => 'child@mail.com',
             'password' => 'child',
-            'role' => 'child'
         ]);
 
         $childUser->assignRole($childRole);
@@ -136,7 +138,6 @@ class RolePermissionSeeder extends Seeder
             'username' => 'guest',
             'email' => 'guest@mail.com',
             'password' => 'guest',
-            'role' => 'guest'
         ]);
 
         $guestUser->assignRole($guestRole);
@@ -150,7 +151,6 @@ class RolePermissionSeeder extends Seeder
             'username' => 'teacher',
             'email' => 'teacher@mail.com',
             'password' => 'teacher',
-            'role' => 'teacher'
         ]);
 
         $teacherUser->assignRole($teacherRole);
