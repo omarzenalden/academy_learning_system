@@ -14,8 +14,8 @@ class Category extends Model
     {
         return $this->hasMany(Course::class);
     }
-    public function interests()
+    public function interested_users()
     {
-        return $this->hasMany(Interest::class);
+        return $this->belongsToMany(User::class)->withTimestamps();
     }
 }

@@ -14,11 +14,11 @@ class LeaderBoard extends Model
 
     public function leader()
     {
-        return $this->morphTo();
+        return $this->hasMany(User::class);
     }
 
-    public function course()
-    {
-        return $this->belongsTo(Course::class, 'course_id');
-    }
+//    public function course()
+//    {
+//        return $this->belongsTo(Course::class, 'course_id');
+//    }
 }

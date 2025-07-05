@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('achievements', function (Blueprint $table) {
+        Schema::create('achievement_user', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->text('description');
-            $table->string('icon_path')->nullable();
+            $table->foreignId('user_id')->references('id')->on('users');
+            $table->foreignId('achievement_id')->references('id')->on('achievements');
+            $table->integer('progress_percentage');
+            $table->boolean('is_done');
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('achievements');
+        Schema::dropIfExists('achievement_user');
     }
 };

@@ -26,7 +26,7 @@ class Exam extends Model
     {
         return $this->belongsTo(Video::class,'video_id');
     }
-    public function results()
+    public function exam_results()
     {
         return $this->hasMany(ExamResult::class);
     }

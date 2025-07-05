@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -51,13 +52,13 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
-    public function academic_certificates()
+    public function academic_certificates(): hasMany
     {
         return $this->hasMany(AcademicCertificate::class);
     }
     public function achievements()
     {
-        return $this->hasMany(Achievement::class);
+        return $this->belongsToMany(Achievement::class)->withTimestamps()->withPivot('is_done','progress_percentage');
     }
 
     public function banned_user()
@@ -69,7 +70,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->banRecord !== null;
     }
-    public function comments()
+    public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
     }
@@ -82,9 +83,15 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(CourseRating::class);
     }
-    public function teacherRate()
+    public function teacher_ratings_given()
     {
-        return $this->hasMany(TeacherRating::class);
+        return $this->hasMany(TeacherRating::class, 'user_id');
+    }
+
+    // Ratings this user (as a teacher) received
+    public function teacher_ratings_received()
+    {
+        return $this->hasMany(TeacherRating::class, 'teacher_id');
     }
 
     public function enthusiasm()
@@ -95,9 +102,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasOne(ExamResult::class);
     }
-    public function interests()
+    public function interested_categories()
     {
-        return $this->hasMany(Interest::class);
+        return $this->belongsToMany(Category::class)->withTimestamps();
     }
 
     public function mcqAnswers()
@@ -131,5 +138,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function watchLater()
     {
         return $this->hasMany(WatchLater::class);
+    }
+
+    public function leader_board()
+    {
+        return $this->belongsTo(LeaderBoard::class, 'leader_id');
     }
 }

@@ -12,10 +12,10 @@ class Question extends Model
         'question_type',
         'mark'
     ];
-    public function answers()
-    {
-        return $this->hasOne(McqAnswer::class);
-    }
+//    public function answer()
+//    {
+//        return $this->hasOne(McqAnswer::class);
+//    }
     public function projects()
     {
         return $this->hasMany(ProjectSubmission::class);

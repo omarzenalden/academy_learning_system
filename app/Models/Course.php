@@ -30,7 +30,7 @@ class Course extends Model
     {
         return $this->hasMany(CourseRating::class);
     }
-    public function requirements()
+    public function course_requirements()
     {
         return $this->hasMany(CourseRequirement::class);
     }

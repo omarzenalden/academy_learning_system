@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\ResponseTrait;
 use App\Services\SocialiteService;
 use Illuminate\Http\Request;
@@ -29,4 +30,5 @@ class SocialiteController extends Controller
         $data = $this->socialiteService->handleGoogleCallback();
         return $this->Success($data['data'],$data['message']);
     }
+
 }
