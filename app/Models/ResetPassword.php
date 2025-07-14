@@ -8,6 +8,9 @@ class ResetPassword extends Model
 {
     protected $fillable = [
         'email',
-        'code'
+        'reset_code',
+        'token',
+        'code_expires_at',
+        'token_expires_at'
     ];
 }

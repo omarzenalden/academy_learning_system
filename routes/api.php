@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\SocialiteController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
@@ -31,8 +32,11 @@ Route::middleware('auth:sanctum')->group(function (){
         return response()->json(['message' => 'Verification email resent.']);
     })->middleware('throttle:6,1')->name('verification.resend');
 });
-//
-//Route::controller(SocialiteController::class)->group(function (){
-//    Route::get('/google/redirect', 'redirectToGoogle');
-//    Route::get('/google/callback', 'handleGoogleCallback');
-//});
+
+
+Route::controller(ResetPasswordController::class)->group(function(){
+   Route::post('/send_code', 'send_reset_password_code');
+   Route::post('/check_code', 'check_reset_code');
+   Route::post('/resend_code', 'resend_reset_code');
+   Route::post('/reset_password', 'set_new_password');
+});
