@@ -36,4 +36,5 @@ class Video extends Model
             ->withPivot('is_attendance')
             ->withTimestamps();
     }
+
 }
