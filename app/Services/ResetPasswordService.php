@@ -90,7 +90,10 @@ class ResetPasswordService
             //check the received token if it is for the same user
             $decoded = JwtHelper::validateToken($checkCodeDto->reset_token);
             if (!$decoded || $decoded->scope !== 'password_reset') {
-                return response()->json(['error' => 'Invalid token'], 401);
+                return [
+                    'data' => null,
+                    'message' => 'reset token is invalid.',
+                ];
             }
             //get the user record that have email and code
             $token_record = ResetPassword::query()
@@ -102,7 +105,7 @@ class ResetPasswordService
             if (!$token_record) {
                 return [
                     'data' => null,
-                    'message' => 'Reset code or email is invalid.',
+                    'message' => 'Reset code is invalid or code is expired.',
                 ];
             }
             //logging user information to track the data
@@ -195,6 +198,12 @@ class ResetPasswordService
         $reset_record = ResetPassword::query()
             ->where('token', $reset_token)
             ->first();
+        if (!$reset_record){
+            return [
+                'data' => null,
+                'message' => 'invalid reset token'
+            ];
+        }
         //get the user record based on email
         $user = User::query()
             ->where('email' , $reset_record->email)
@@ -209,6 +218,13 @@ class ResetPasswordService
         }
         try {
             DB::beginTransaction();
+            //check if the new password same as old one
+            if (Hash::check($request, $user->password)) {
+                return [
+                    'data' => null,
+                    'message' => 'The new password must be different from your current password.'
+                ];
+            }
             //update the password of the user based on form request
         User::query()
             ->where('email', $user->email)

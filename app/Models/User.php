@@ -77,7 +77,9 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
     }
     public function courses()
     {
-        return $this->hasOne(Course::class);
+        return $this->belongsToMany(Course::class)
+            ->withPivot(['is_completed', 'completed_at', 'certificate_id'])
+            ->withTimestamps();
     }
 
     public function courseRate()
@@ -95,9 +97,9 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
         return $this->hasMany(TeacherRating::class, 'teacher_id');
     }
 
-    public function enthusiasm()
+    public function strike()
     {
-        return $this->hasOne(Enthusiasm::class);
+        return $this->hasOne(Strike::class);
     }
     public function examResult()
     {
@@ -144,5 +146,15 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
     public function leader_board()
     {
         return $this->belongsTo(LeaderBoard::class, 'leader_id');
+    }
+    public function certificates()
+    {
+        return $this->hasManyThrough(Certificate::class, 'course_user');
+    }
+    public function attendedVideos()
+    {
+        return $this->belongsToMany(Video::class, 'user_attendance')
+            ->withPivot('is_attendance')
+            ->withTimestamps();
     }
 }
