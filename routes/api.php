@@ -6,6 +6,7 @@ use App\Http\Controllers\SocialiteController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CategoryController;
 
 Route::controller(AuthenticationController::class)->group(function(){
    Route::post('sign_up','sign_up');
@@ -39,4 +40,13 @@ Route::controller(ResetPasswordController::class)->group(function(){
    Route::post('/check_code', 'check_reset_code');
    Route::post('/resend_code', 'resend_reset_code');
    Route::post('/reset_password', 'set_new_password');
+});
+////////////////////
+
+Route::controller(CategoryController::class)->group(function () {
+    Route::get('getAllCategory', 'index');
+    Route::get('getCategoryDetails/{category}', 'show');
+    Route::post('CreateCategory', 'store');
+    Route::post('UpdateCategory/{category}', 'update');
+    Route::delete('DeleteCategory/{category}', 'destroy');
 });
