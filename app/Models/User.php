@@ -28,6 +28,7 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
         'password',
         'social_id',
         'social_type',
+        'is_approved',
     ];
 
     /**
@@ -55,7 +56,7 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
 
     public function academic_certificates(): hasMany
     {
-        return $this->hasMany(AcademicCertificate::class);
+        return $this->hasMany(AcademicCertificate::class, 'teacher_id', 'id');
     }
     public function achievements()
     {

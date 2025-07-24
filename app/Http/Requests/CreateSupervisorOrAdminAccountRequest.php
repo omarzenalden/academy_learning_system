@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class signUpRequest extends FormRequest
+class CreateSupervisorOrAdminAccountRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,13 +24,8 @@ class signUpRequest extends FormRequest
         return [
             'username'     => 'required|string|max:255|unique:users,username',
             'email'        => 'required|email|max:255|unique:users,email',
-            'user_type'    => 'required|string|in:woman,child,teacher',
+            'user_type'    => 'required|string|in:supervisor,admin',
             'password'     => 'required|string|min:8|confirmed',
-            'social_id'    => 'nullable|string|max:255',
-            'social_type'  => 'nullable|string|in:google,facebook,apple',
-            'file_path' => 'required_if:user_type,teacher|array',
-            'file_path.*' => 'file|mimes:pdf,jpg,png|max:2048',
-            'description'  => 'nullable|string',
             ];
     }
 }

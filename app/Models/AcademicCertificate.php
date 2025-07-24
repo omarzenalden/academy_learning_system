@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class AcademicCertificate extends Model
 {
     protected $fillable = [
-        'teacher_id',
         'file_path',
-        'description'
+        'description',
+        'teacher_id'
     ];
 
     public function teacher()

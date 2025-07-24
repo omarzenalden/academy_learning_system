@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('banned_users', function (Blueprint $table) {
             $table->id();
             $table->text('reason');
-            $table->date('expires_at');
+            $table->date('expires_at')->nullable();
             $table->foreignId('user_id')->references('id')->on('users');
             $table->timestamps();
         });

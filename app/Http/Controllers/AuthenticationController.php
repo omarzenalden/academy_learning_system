@@ -12,6 +12,7 @@ use Exception;
 use Illuminate\Http\Request;
 use App\Services\AuthenticationService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Throwable;
 
 class AuthenticationController extends Controller
@@ -25,7 +26,20 @@ class AuthenticationController extends Controller
 
     public function sign_up(SignUpRequest $request)
     {
-            $signUpDto = SignUpDto::fromArray($request->validated());
+        $data = $request->validated();
+
+        $file_urls = [];
+        if ($request->hasFile('file_path')) {
+            foreach ($request->file('file_path') as $file) {
+                $file_path = $file->store('certificates', 'public');
+                $file_url = Storage::disk('public')->path($file_path);
+                $file_urls[] = $file_url;
+            }
+        }
+        $data['file_path'] = $file_urls;
+
+
+        $signUpDto = SignUpDto::fromArray($data);
             $data = $this->authenticationService->sign_up($signUpDto);
             return $this->Success($data['data'],$data['message']);
     }

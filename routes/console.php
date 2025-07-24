@@ -8,3 +8,4 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 Schedule::command('reset_password:cleanup')->everyTenMinutes();
+Schedule::command('users:unban-expired')->hourly();
