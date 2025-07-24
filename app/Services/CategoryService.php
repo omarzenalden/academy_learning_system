@@ -168,7 +168,7 @@
                     }
                     $category->delete();
                     DB::commit();
-                    //save in log file 
+                    //save in log file
                     Log::info('Category deleted', ['id' => $id]);
                     return [
                         'data' => null,
