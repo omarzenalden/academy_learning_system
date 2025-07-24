@@ -44,6 +44,7 @@ Route::controller(ResetPasswordController::class)->group(function(){
    Route::post('/resend_code', 'resend_reset_code');
    Route::post('/reset_password', 'set_new_password');
 });
+////////////////////                   CATEGORY                  ////////////
 
 
 Route::controller(TeacherRequestsController::class)
@@ -72,4 +73,17 @@ Route::controller(BannedUserController::class)
 
 
 
+});
+
+/////////////////////            courses               ///////////////
+use App\Http\Controllers\CourseController;
+
+Route::controller(CourseController::class)->group(function () {
+    Route::get('getAllcourses',  'index');
+    Route::get('getCourseDetails/{id}',  'show');
+    Route::get('getMy-courses',  'myCourses');
+    Route::get('getEnded-courses',  'endedCourses');
+    Route::post('createCourse', 'store');
+    Route::post('updateCourse/{id}', 'update');
+    Route::delete('deleteCourses/{id}', 'destroy');
 });
