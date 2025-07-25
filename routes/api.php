@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\BannedUserController;
-use App\Http\Controllers\CourseController;
 use App\Http\Controllers\MakeSupervisorOrAdminAccountController;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\ResetPasswordController;
@@ -10,7 +9,6 @@ use App\Http\Controllers\TeacherRequestsController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CategoryController;
 Route::middleware('isBanned')->group(function () {
 
 Route::controller(AuthenticationController::class)->group(function(){
@@ -46,27 +44,7 @@ Route::controller(ResetPasswordController::class)->group(function(){
    Route::post('/resend_code', 'resend_reset_code');
    Route::post('/reset_password', 'set_new_password');
 });
-////////////////////                   CATEGORY                  ////////////
 
-Route::controller(CategoryController::class)->group(function () {
-    Route::get('getAllCategory', 'index');
-    Route::get('getCategoryDetails/{category}', 'show');
-    Route::post('CreateCategory', 'store');
-    Route::post('UpdateCategory/{category}', 'update');
-    Route::delete('DeleteCategory/{category}', 'destroy');
-});
-
-/////////////////////            courses               ///////////////
-
-Route::controller(CourseController::class)->group(function () {
-    Route::get('getAllcourses',  'index');
-    Route::get('getCourseDetails/{id}',  'show');
-    Route::get('getMy-courses',  'myCourses');
-    Route::get('getEnded-courses',  'endedCourses');
-    Route::post('createCourse', 'store');
-    Route::post('updateCourse/{id}', 'update');
-    Route::delete('deleteCourses/{id}', 'destroy');
-});
 
 Route::controller(TeacherRequestsController::class)
 ->middleware('auth:sanctum')
@@ -91,4 +69,7 @@ Route::controller(BannedUserController::class)
        Route::get('/temporary_banned_users', 'temporary_banned_users');
        Route::get('/permanent_banned_users', 'permanent_banned_users');
     });
+
+
+
 });
