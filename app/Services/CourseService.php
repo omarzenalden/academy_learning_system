@@ -7,11 +7,12 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 class CourseService
 {
-    public function getAllActive()//done
+    public function getAllActive()//get all courses with status  published
     {
         try {
-            $courses = Course::where('status', 'published')->get();
-            if($courses->isempty()) {
+            $courses = Course::where('status', 'published')->get(); //check for status published
+            if($courses->isempty()) //check if courses are founded
+            {
                 return ['data' => null, 'message' => 'there is not Active courses '];
             }else{
                 return ['data' => $courses, 'message' => 'Active courses retrieved successfully'];
@@ -22,10 +23,10 @@ class CourseService
         }
     }
 
-    public function getById($id)//done
+    public function getById($id)//get course by id
     {
         try {
-            $course = Course::find($id);
+            $course = Course::find($id); //check if course is found
             if (!$course) {
                 return ['data' => null, 'message' => 'Course not found'];
             }
@@ -71,6 +72,14 @@ class CourseService
 
     public function delete($id)
     {
+        $user = auth()->user();
+
+        if (!$user || auth()->user()->role !== 'teacher') {
+            return [
+                'data' => null,
+                'message' => 'Unauthorized - teacher only'
+            ];
+        }
         DB::beginTransaction();
         try {
             $course = Course::find($id);
@@ -91,6 +100,13 @@ class CourseService
 
     public function store(CourseDto $dto)
     {
+        $user = auth()->user();
+        if (!$user || auth()->user()->role !== 'teacher') {
+            return [
+                'data' => null,
+                'message' => 'Unauthorized - teacher only'
+            ];
+        }
         DB::beginTransaction();
         try {
             $course = Course::create([
@@ -110,12 +126,22 @@ class CourseService
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Course creation failed', ['error' => $e->getMessage()]);
-            return ['data' => null, 'message' => 'Failed to create course'];
+            return [
+                'data' => null,
+                'message' => $e->getMessage()];
+//                'message' => 'Failed to create course'];
         }
     }
 
     public function update($id, CourseDto $dto)
     {
+        $user = auth()->user();
+        if (!$user || auth()->user()->role !== 'teacher') {
+            return [
+                'data' => null,
+                'message' => 'Unauthorized - teacher only'
+            ];
+        }
         DB::beginTransaction();
         try {
             $course = Course::find($id);

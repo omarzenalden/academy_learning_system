@@ -33,4 +33,10 @@ class StoreCourseRequest extends FormRequest
                   'category_id' => 'required|exists:categories,id',
               ];
     }
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'status' => $this->status ?? 'pending_approval',
+        ]);
+    }
 }
