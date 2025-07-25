@@ -1,12 +1,17 @@
 <?php
 
+use App\Http\Controllers\BannedUserController;
+use App\Http\Controllers\CourseController;
+use App\Http\Controllers\MakeSupervisorOrAdminAccountController;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\SocialiteController;
+use App\Http\Controllers\TeacherRequestsController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
+Route::middleware('isBanned')->group(function () {
 
 Route::controller(AuthenticationController::class)->group(function(){
    Route::post('sign_up','sign_up');
@@ -52,7 +57,6 @@ Route::controller(CategoryController::class)->group(function () {
 });
 
 /////////////////////            courses               ///////////////
-use App\Http\Controllers\CourseController;
 
 Route::controller(CourseController::class)->group(function () {
     Route::get('getAllcourses',  'index');
@@ -62,4 +66,29 @@ Route::controller(CourseController::class)->group(function () {
     Route::post('createCourse', 'store');
     Route::post('updateCourse/{id}', 'update');
     Route::delete('deleteCourses/{id}', 'destroy');
+});
+
+Route::controller(TeacherRequestsController::class)
+->middleware('auth:sanctum')
+->group(function(){
+   Route::get('/teacher_requests', 'show_all_teacher_requests');
+   Route::post('/handle_teacher_request/{teacher_id}', 'approve_teacher_request');
+});
+
+
+Route::controller(MakeSupervisorOrAdminAccountController::class)
+->middleware(['auth:sanctum'])
+->prefix('admin')
+->group(function (){
+        Route::post('/create_supervisor_admin_account','create_supervisor_admin_account');
+});
+
+Route::controller(BannedUserController::class)
+    ->middleware('auth:sanctum')
+    ->group(function (){
+       Route::post('/ban_user', 'ban_user');
+       Route::post('/banned_users', 'all_banned_users');
+       Route::get('/temporary_banned_users', 'temporary_banned_users');
+       Route::get('/permanent_banned_users', 'permanent_banned_users');
+    });
 });

@@ -23,7 +23,7 @@ class RolePermissionSeeder extends Seeder
         $womanRole = Role::create(['name' => 'woman']);
         $childRole = Role::create(['name' => 'child']);
         $teacherRole = Role::create(['name' => 'teacher']);
-        $supervisorRole = Role::create(['name' => 'Supervisor']);
+        $supervisorRole = Role::create(['name' => 'supervisor']);
         $adminRole = Role::create(['name' => 'admin']);
 
         //all app permissions
