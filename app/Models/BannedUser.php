@@ -11,10 +11,7 @@ class BannedUser extends Model
         'reason',
         'expires_at'
     ];
-<<<<<<< HEAD
 
-=======
->>>>>>> ca7ced0 (first version: database, models and spatie role)
     public function user()
     {
         return $this->belongsTo(User::class,'user_id');
