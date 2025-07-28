@@ -79,16 +79,15 @@ Route::controller(BannedUserController::class)
 /////////////////////            courses               ///////////////
 use App\Http\Controllers\CourseController;
 
-Route::controller(CourseController::class)->group(function () {
+Route::controller(CourseController::class)->middleware('auth:sanctum')->group(function () {
     Route::get('getAllcourses',  'index');
     Route::get('getCourseDetails/{id}',  'show');
     Route::get('getMy-courses',  'myCourses');
-    Route::get('getEnded-courses',  'endedCourses');
+    Route::get('getEnded-courgetMy-coursesses',  'endedCourses');
     Route::post('createCourse', 'store');
     Route::post('updateCourse/{id}', 'update');
     Route::delete('deleteCourses/{id}', 'destroy');
 });
-
 ////////////////////
 
 Route::controller(CategoryController::class)->group(function () {

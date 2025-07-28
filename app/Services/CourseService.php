@@ -40,16 +40,17 @@ class CourseService
     {
         try {
             $user = auth()->user();
-            if (!$user || auth()->user()->role !== 'teacher'){
-                return ['data' => null, 'message' => 'Unauthorized - teacher only'];
 
+            if (!$user || !$user->hasRole('teacher')) {
+                return ['data' => null, 'message' => 'Unauthorized - teacher only'];
             }
-//            $userId = auth()->id();
-            $courses = Course::where('user_id', $user->auth()->id )->get();
-            return ['data' => $courses, 'message' => 'Your courses retrieved successfully'];
+
+            $courses = Course::where('user_id', $user->id)->get();
+
+            return ['data' => $courses, 'message' => 'Courses retrieved successfully'];
         } catch (\Exception $e) {
-            Log::error('Fetching user courses failed', ['error' => $e->getMessage()]);
-            return ['data' => null, 'message' => 'Failed to fetch your courses'];
+            Log::error('Failed to get courses', ['error' => $e->getMessage()]);
+            return ['data' => null, 'message' => 'Something went wrong'];
         }
     }
 
@@ -71,6 +72,13 @@ class CourseService
 
     public function delete($id)
     {
+        $user = auth()->user();
+        if (!$user || !$user->hasRole('supervisor')) {
+            return [
+                'data' => null,
+                'message' => 'Unauthorized - supervisor only'
+            ];
+        }
         DB::beginTransaction();
         try {
             $course = Course::find($id);
@@ -91,31 +99,54 @@ class CourseService
 
     public function store(CourseDto $dto)
     {
+        $user = auth()->user();
+        if (!$user || auth()->user()->role !== 'teacher') {
+            return [
+                'data' => null,
+                'message' => 'Unauthorized - teacher only'
+            ];
+        }
         DB::beginTransaction();
+
         try {
-            $course = Course::create([
-                'course_name' => $dto->course_name,
-                'description' => $dto->description,
-                'rating' => $dto->rating,
-                'status' => $dto->status,
-                'is_paid' => $dto->is_paid,
-                'start_date' => $dto->start_date,
-                'end_date' => $dto->end_date,
+            $data = array_merge($dto->toArray(), [
                 'user_id' => auth()->id(),
-                'category_id' => $dto->category_id,
             ]);
+
+            $course = Course::create($data);
+
             DB::commit();
             Log::info('Course created', ['id' => $course->id]);
+
             return ['data' => $course, 'message' => 'Course created successfully'];
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Course creation failed', ['error' => $e->getMessage()]);
+
             return ['data' => null, 'message' => 'Failed to create course'];
         }
     }
 
+
     public function update($id, CourseDto $dto)
-    {
+    {  $user = auth()->user();
+        if (!$user || !$user->hasRole('teacher')) {
+            return [
+                'data' => null,
+                'message' => 'Unauthorized - teacher only'
+            ];
+        }
+        $course = Course::find($id);
+        if (!$course) {
+            DB::rollBack();
+            return ['data' => null, 'message' => 'Course not found'];
+        }
+
+        if ($course->user_id !== $user->id) {
+            DB::rollBack();
+            return ['data' => null, 'message' => 'Unauthorized - not the course owner'];
+        }
+
         DB::beginTransaction();
         try {
             $course = Course::find($id);

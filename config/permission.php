@@ -10,7 +10,7 @@ return [
          * is often just the "Permission" model but you may use whatever you like.
          *
          * The model you want to use as a Permission model needs to implement the
-         * `Spatie\Permission\Contracts\Permission` contract.
+         * Spatie\Permission\Contracts\Permission contract.
          */
 
         'permission' => Spatie\Permission\Models\Permission::class,
@@ -21,13 +21,10 @@ return [
          * is often just the "Role" model but you may use whatever you like.
          *
          * The model you want to use as a Role model needs to implement the
-         * `Spatie\Permission\Contracts\Role` contract.
+         * Spatie\Permission\Contracts\Role contract.
          */
 
-<<<<<<< HEAD
 
-=======
->>>>>>> ca7ced0 (first version: database, models and spatie role)
         'role' => Spatie\Permission\Models\Role::class,
 
     ],
@@ -84,17 +81,17 @@ return [
 
         /*
          * Change this if you want to name the related model primary key other than
-         * `model_id`.
+         * model_id.
          *
          * For example, this would be nice if your primary keys are all UUIDs. In
-         * that case, name this `model_uuid`.
+         * that case, name this model_uuid.
          */
 
         'model_morph_key' => 'model_id',
 
         /*
          * Change this if you want to use the teams feature and your related model's
-         * foreign key is other than `team_id`.
+         * foreign key is other than team_id.
          */
 
         'team_foreign_key' => 'team_id',
@@ -114,7 +111,7 @@ return [
      */
     'register_octane_reset_listener' => false,
 
-    /*
+/*
      * Events will fire when a role or permission is assigned/unassigned:
      * \Spatie\Permission\Events\RoleAttached
      * \Spatie\Permission\Events\RoleDetached
@@ -197,8 +194,8 @@ return [
 
         /*
          * You may optionally indicate a specific cache driver to use for permission and
-         * role caching using any of the `store` drivers listed in the cache.php config
-         * file. Using 'default' here means to use the `default` set in cache.php.
+         * role caching using any of the store drivers listed in the cache.php config
+         * file. Using 'default' here means to use the default set in cache.php.
          */
 
         'store' => 'default',

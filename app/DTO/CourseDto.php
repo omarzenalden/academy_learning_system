@@ -26,4 +26,18 @@ class CourseDto
         $dto->category_id = $data['category_id'];
         return $dto;
     }
+    public function toArray(): array
+    {
+        return [
+            'course_name' => $this->course_name,
+            'description' => $this->description,
+            'rating' => $this->rating,
+            'status' => $this->status,
+            'is_paid' => $this->is_paid,
+            'start_date' => $this->start_date,
+            'end_date' => $this->end_date,
+            'category_id' => $this->category_id,
+        ];
+    }
+
 }

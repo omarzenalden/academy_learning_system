@@ -45,8 +45,6 @@ class AuthenticationService
                     ]);
                 }
             }
-        //create a user with Request file information
-        $user = User::query()->create((array)$signUpDto);
 
         $user->assignRole($signUpDto->user_type);
         $user = $this->helper->give_and_load_permissions_and_roles($signUpDto->user_type,$user);
